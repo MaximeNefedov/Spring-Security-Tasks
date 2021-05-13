@@ -33,8 +33,11 @@ public class CustomizedUserDetailService implements UserDetailsService {
     }
 
     private Set<SimpleGrantedAuthority> getAuthorities(Set<Role> roles) {
-        Set<Authorities> authorities = new HashSet<>();
-        roles.forEach(role -> authorities.addAll(role.getAuthorities()));
-        return authorities.stream().map(authority -> new SimpleGrantedAuthority(authority.getName())).collect(Collectors.toSet());
+        Set<String> authorities = new HashSet<>();
+        roles.forEach(role -> authorities.add("ROLE_" + role.getName()));
+        roles.forEach(role -> authorities.addAll(role.getAuthorities().stream().map(Authorities::getName).collect(Collectors.toSet())));
+        authorities.forEach(System.out::println);
+//        roles.forEach(role -> authorities.addAll(role.getAuthorities().f));
+        return authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
     }
 }

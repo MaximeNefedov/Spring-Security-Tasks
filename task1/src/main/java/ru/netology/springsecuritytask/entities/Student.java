@@ -2,11 +2,10 @@ package ru.netology.springsecuritytask.entities;
 
 import lombok.*;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.io.Serializable;
 
+@Builder
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "university")
@@ -14,9 +13,12 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "students")
-public class Student {
-    @EmbeddedId
-    private StudentId studentId;
+public class Student implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String name;
+    private String surname;
     @ManyToOne
     @ToString.Exclude
     @JoinColumn(name = "university_id")
